@@ -3,7 +3,7 @@ import { Route, Redirect } from 'react-router-dom';
 
 import { AuthContext } from '../context/auth';
 
-const AuthRoute = ({ component: Component, ...rest }) => {
+const LoggedInAuthRoute = ({ component: Component, ...rest }) => {
   const { user } = useContext(AuthContext);
   return (
     <Route
@@ -15,4 +15,20 @@ const AuthRoute = ({ component: Component, ...rest }) => {
   );
 };
 
-export default AuthRoute;
+const LoggedOutAuthRoute = ({ component: Component, ...rest }) => {
+  const { user } = useContext(AuthContext);
+  return (
+    <Route
+      {...rest}
+      render={props =>
+        user ? <Component {...props}/> : <Redirect to='register' />
+      }
+    />
+  );
+};
+
+
+export {
+  LoggedInAuthRoute,
+  LoggedOutAuthRoute
+};
