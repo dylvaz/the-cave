@@ -23,11 +23,12 @@ const Register = (props) => {
     },
     onError(err) {
       setErrors(err.graphQLErrors[0].extensions.exception.errors);
-    }
+    },
+    variables: values
   });
 
   function registerUser() {
-    addUser({ variables: values });
+    addUser();
   }
 
   return (
