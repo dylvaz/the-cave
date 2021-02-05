@@ -37,6 +37,7 @@ const Login = (props) => {
           label="Username"
           placeholder="Username"
           name="username"
+          autoComplete="username"
           type="text"
           value={values.username}
           error={errors.username ? true : false}
