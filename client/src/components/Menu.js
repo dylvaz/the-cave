@@ -11,8 +11,8 @@ const MenuBar = () => {
   const [activeItem, setActiveItem] = useState(path);
 
   const handleItemClick = (e, { name }) => setActiveItem(name);
-  
-  const menuBar = user ? ( 
+
+  const menuBar = user ? (
     <Menu pointing secondary size="massive" color="purple">
       <Menu.Item style={{ textTransform: 'lowercase' }}
         name={user.username}
@@ -41,7 +41,7 @@ const MenuBar = () => {
       <Menu pointing secondary size="massive" color="purple">
         <Menu.Item
           name='home'
-          active={activeItem === 'home' || pathname === '/' }
+          active
           onClick={handleItemClick}
           as={Link}
           to='/'
