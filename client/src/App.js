@@ -13,6 +13,7 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import CreatePost from './components/CreatePost';
+import SinglePost from './pages/SinglePost';
 
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
           <LoggedInAuthRoute exact path='/login' component={Login} />
           <LoggedInAuthRoute exact path='/register' component={Register} />
           <LoggedOutAuthRoute exact path='/createPost' component={CreatePost} />
+          <Route exact path='/posts/:postId' component={SinglePost} />
         </Container>
       </Router>
     </AuthProvider>
