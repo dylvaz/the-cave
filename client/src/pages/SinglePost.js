@@ -1,6 +1,6 @@
 import React, { useContext, useRef, useState } from 'react';
 import { gql, useMutation, useQuery } from '@apollo/client';
-import { Button, Card, Form, Grid, Icon, Image, Label } from 'semantic-ui-react';
+import { Button, Card, Form, Grid, Icon, Image, Label, Popup } from 'semantic-ui-react';
 import { formatDistanceToNow, parseISO } from 'date-fns';
 
 import { AuthContext } from '../context/auth';
@@ -58,10 +58,10 @@ const SinglePost = (props) => {
                 <Card.Meta>{formatDistanceToNow(parseISO(createdAt), { addSuffix: true })}</Card.Meta>
                 <Card.Description>{body}</Card.Description>
               </Card.Content>
-              <hr />
+              <hr/>
               <Card.Content extra>
                 <LikeButton user={user} post={{ id, likeCount, likes }} />
-                <Button as='div' labelPosition='right' onClick={() => console.log('commented on post')}>
+                <Button as='div' labelPosition='right'>
                   <Button basic color='violet'>
                     <Icon name='comments' />
                   </Button>
@@ -88,13 +88,19 @@ const SinglePost = (props) => {
                         onChange={e => setComment(e.target.value)}
                         ref={commentInputRef}
                       />
-                      <button type='submit'
-                        className='ui button purple'
-                        disabled={comment.trim() === ''}
-                        onClick={submitComment}
-                      >
-                        Submit
-                    </button>
+                      <Popup
+                        content='Submit comment'
+                        inverted
+                        trigger={
+                          <button type='submit'
+                            className='ui button purple'
+                            disabled={comment.trim() === ''}
+                            onClick={submitComment}
+                          >
+                            Submit
+                          </button>
+                        }
+                      />
                     </div>
                   </Form>
                 </Card.Content>
