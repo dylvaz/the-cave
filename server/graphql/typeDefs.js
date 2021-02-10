@@ -28,6 +28,7 @@ const { gql } = require('apollo-server');
     token: String!
     username: String!
     createdAt: String!
+    image: String
   }
   input RegisterInput {
     username: String!
