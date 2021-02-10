@@ -16,11 +16,18 @@ const MenuBar = () => {
     <Menu pointing secondary size="massive" color="purple">
       <Menu.Item style={{ textTransform: 'lowercase' }}
         name={user.username}
-        active={activeItem === user.username || pathname === '/'}
+        active={activeItem === user.username}
+        onClick={handleItemClick}
+        as={Link}
+        to={`/user/${user.id}`}
+      />
+        <Menu.Item
+        name='home'
+        active={activeItem === 'home' || pathname === '/'}
         onClick={handleItemClick}
         as={Link}
         to='/'
-      />
+        />
       <Menu.Item
         name='Create Post'
         active={activeItem === 'Create Post' || pathname === '/createPost'}
