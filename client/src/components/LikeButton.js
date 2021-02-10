@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Icon, Label } from 'semantic-ui-react';
+import { Button, Icon, Label, Popup } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import { gql, useMutation } from '@apollo/client';
 
@@ -16,27 +16,33 @@ const LikeButton = ({ user, post: { id, likeCount, likes } }) => {
 
   const [likePost] = useMutation(LIKE_POST_MUTATION, {
     variables: { postId: id }
-  })
-  
+  });
+
   const likeButton = user ? (
     liked ? (
       <Button color='red'>
         <Icon name='heart' />
       </Button>
     ) : (
-      <Button color='red' basic>
+        <Button color='red' basic>
+          <Icon name='heart' />
+        </Button>
+      )
+  ) : (
+      <Button as={Link} to='/register' color='red' basic>
         <Icon name='heart' />
       </Button>
-    )
-  ) : (
-    <Button as={Link} to='/register' color='red' basic>
-    <Icon name='heart' />
-  </Button>
-  )
+    );
 
   return (
     <Button as='div' labelPosition='right' onClick={likePost}>
-      {likeButton}
+      <Popup
+        content={liked ? 'Unlike' : 'Like'}
+        inverted
+        trigger={
+          likeButton
+        }
+      />
       <Label basic color='red' pointing='left'>
         {likeCount}
       </Label>
