@@ -10,13 +10,13 @@ const CreatePost = () => {
   const [userError, setUserError] = useState(false);
   const [redirect, setRedirect] = useState(false);
   const { onChange, onSubmit, values } = useForm(createPostCallback, {
-    body: ''
+    body: '',
   });
 
   useEffect(() => {
     setRedirect(false);
   }, [redirect]);
-  
+
   const [createPost, { loading, error }] = useMutation(CREATE_POST, {
     variables: values,
     update(proxy, res) {
@@ -24,8 +24,8 @@ const CreatePost = () => {
       proxy.writeQuery({
         query: FETCH_POSTS_QUERY,
         data: {
-          getPosts: [res.data.createPost, ...data.getPosts]
-        }
+          getPosts: [res.data.createPost, ...data.getPosts],
+        },
       });
       values.body = '';
       setUserError(false);
@@ -39,15 +39,14 @@ const CreatePost = () => {
 
   function createPostCallback() {
     createPost();
-  };
+  }
 
-
-  return (redirect ?
+  return redirect ? (
     <Redirect to='/' />
-    :
-    < div className={loading ? 'loading' : ''}>
+  ) : (
+    <div className={loading ? 'loading' : ''}>
       <Form onSubmit={onSubmit}>
-        <h2 className="page-title">Create a Post ✍️</h2>
+        <h2 className='page-title'>Create a Post ✍️</h2>
         <Form.TextArea
           placeholder='Write your post here!'
           name='body'
@@ -57,11 +56,11 @@ const CreatePost = () => {
         />
         <Button type='submit' color='purple'>
           Create Post
-          </Button>
+        </Button>
       </Form>
       {error && (
-        <div className="ui error message">
-          <ul className="list">
+        <div className='ui error message'>
+          <ul className='list'>
             <li>{error.graphQLErrors[0].message}</li>
           </ul>
         </div>
@@ -70,7 +69,6 @@ const CreatePost = () => {
   );
 };
 
-
 const CREATE_POST = gql`
   mutation createPost($body: String!) {
     createPost(body: $body) {
@@ -78,6 +76,7 @@ const CREATE_POST = gql`
       body
       username
       createdAt
+      imgUrl
       comments {
         id
         body
