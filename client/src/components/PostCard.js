@@ -26,7 +26,6 @@ const PostCard = ({
     <Card fluid>
       <Card.Content>
         <Image floated='right' size='mini' src={imgUrl || PFP} />
-        {console.log(user)}
         <Card.Header>{username}</Card.Header>
         <Card.Meta as={Link} to={`posts/${id}`}>
           {formatDistanceToNow(parseISO(createdAt), { addSuffix: true })}
