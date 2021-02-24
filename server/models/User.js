@@ -1,10 +1,10 @@
 const { model, Schema } = require('mongoose');
 
 const userSchema = new Schema({
-  username: String, 
+  username: String,
   password: String,
   email: String,
-  image: String,
+  imgUrl: String,
   createdAt: String,
 });
 
