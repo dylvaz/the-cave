@@ -7,7 +7,7 @@ const LikeButton = ({ user, post: { id, likeCount, likes } }) => {
   const [liked, setLiked] = useState(false);
 
   useEffect(() => {
-    if (user && likes.find(like => like.username === user.username)) {
+    if (user && likes.find((like) => like.username === user.username)) {
       setLiked(true);
     } else {
       setLiked(false);
@@ -15,7 +15,10 @@ const LikeButton = ({ user, post: { id, likeCount, likes } }) => {
   }, [user, likes]);
 
   const [likePost] = useMutation(LIKE_POST_MUTATION, {
-    variables: { postId: id }
+    onError(err) {
+      return err;
+    },
+    variables: { postId: id },
   });
 
   const likeButton = user ? (
@@ -24,24 +27,22 @@ const LikeButton = ({ user, post: { id, likeCount, likes } }) => {
         <Icon name='heart' />
       </Button>
     ) : (
-        <Button color='red' basic>
-          <Icon name='heart' />
-        </Button>
-      )
-  ) : (
-      <Button as={Link} to='/register' color='red' basic>
+      <Button color='red' basic>
         <Icon name='heart' />
       </Button>
-    );
+    )
+  ) : (
+    <Button as={Link} to='/register' color='red' basic>
+      <Icon name='heart' />
+    </Button>
+  );
 
   return (
     <Button as='div' labelPosition='right' onClick={likePost}>
       <Popup
         content={liked ? 'Unlike' : 'Like'}
         inverted
-        trigger={
-          likeButton
-        }
+        trigger={likeButton}
       />
       <Label basic color='red' pointing='left'>
         {likeCount}
@@ -58,7 +59,7 @@ const LIKE_POST_MUTATION = gql`
         id
         username
       }
-      likeCount 
+      likeCount
     }
   }
 `;
