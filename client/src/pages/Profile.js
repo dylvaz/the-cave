@@ -12,7 +12,6 @@ const Profile = () => {
 
   return (
     <Card>
-      {console.log(user)}
       <Image src={user.imgUrl || PFP} />
       <Card.Content>
         <Card.Header>{user.username}</Card.Header>
