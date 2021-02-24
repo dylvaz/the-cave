@@ -12,8 +12,9 @@ import MenuBar from './components/Menu';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import CreatePost from './components/CreatePost';
+import CreatePost from './pages/CreatePost';
 import SinglePost from './pages/SinglePost';
+import Profile from './pages/Profile';
 
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
           <LoggedInAuthRoute exact path='/login' component={Login} />
           <LoggedInAuthRoute exact path='/register' component={Register} />
           <LoggedOutAuthRoute exact path='/createPost' component={CreatePost} />
+          <Route exact path='/user/:id' component={Profile} />
           <Route exact path='/posts/:postId' component={SinglePost} />
         </Container>
       </Router>
