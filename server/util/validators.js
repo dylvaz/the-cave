@@ -43,7 +43,6 @@ module.exports.validateLoginInput = (username, password) => {
 
 module.exports.imageTypeValidator = (imageType) => {
   const errors = {};
-  console.log(imageType);
   const allowedImageExtensions = /(\.jpg|\.jpeg|\.bmp|\.png|\.gif)$/i;
   if (!allowedImageExtensions.exec(imageType) && !null) {
     errors.image =

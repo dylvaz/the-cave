@@ -42,7 +42,6 @@ module.exports = {
         Body: fileStream,
       };
       const result = await s3.upload(uploadParams).promise();
-      console.log(result);
       const fileData = {
         key: result.key,
         location: result.Location,
