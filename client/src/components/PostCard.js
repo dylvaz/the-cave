@@ -6,20 +6,31 @@ import { Link } from 'react-router-dom';
 import { AuthContext } from '../context/auth';
 import LikeButton from './LikeButton';
 import DeleteButton from './DeleteButton';
+import PFP from '../assets/defaultPFP.jpg';
 
-const PostCard = ({ post: { body, createdAt, id, username, likeCount, commentCount, likes } }) => {
+const PostCard = ({
+  post: {
+    body,
+    createdAt,
+    id,
+    username,
+    likeCount,
+    commentCount,
+    likes,
+    imgUrl,
+  },
+}) => {
   const { user } = useContext(AuthContext);
 
   return (
     <Card fluid>
       <Card.Content>
-        <Image
-          floated='right'
-          size='mini'
-          src='https://react.semantic-ui.com/images/avatar/large/molly.png'
-        />
+        <Image floated='right' size='mini' src={imgUrl || PFP} />
+        {console.log(user)}
         <Card.Header>{username}</Card.Header>
-        <Card.Meta as={Link} to={`posts/${id}`}>{formatDistanceToNow(parseISO(createdAt), { addSuffix: true })}</Card.Meta>
+        <Card.Meta as={Link} to={`posts/${id}`}>
+          {formatDistanceToNow(parseISO(createdAt), { addSuffix: true })}
+        </Card.Meta>
         <Card.Description>{body}</Card.Description>
       </Card.Content>
       <Card.Content>
@@ -42,7 +53,6 @@ const PostCard = ({ post: { body, createdAt, id, username, likeCount, commentCou
       </Card.Content>
     </Card>
   );
-
 };
 
 export default PostCard;
