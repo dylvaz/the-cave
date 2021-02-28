@@ -13,6 +13,7 @@ import {
 import { formatDistanceToNow, parseISO } from 'date-fns';
 
 import { AuthContext } from '../context/auth';
+import { GET_AUTHOR_PFP } from '../util/graphql';
 import DeleteButton from '../components/DeleteButton';
 import LikeButton from '../components/LikeButton';
 import PFP from '../assets/defaultPFP.jpg';
@@ -24,6 +25,12 @@ const SinglePost = (props) => {
   const commentInputRef = useRef(null);
 
   const [comment, setComment] = useState('');
+
+  const { data: { getAuthorPFP } = {} } = useQuery(GET_AUTHOR_PFP, {
+    variables: {
+      username: user.username,
+    },
+  });
 
   const { data: { getPost } = {} } = useQuery(FETCH_POST_QUERY, {
     variables: {
@@ -56,7 +63,6 @@ const SinglePost = (props) => {
       commentCount,
       comments,
       id,
-      imgUrl,
       likeCount,
       likes,
       username,
@@ -65,7 +71,11 @@ const SinglePost = (props) => {
       <Grid>
         <Grid.Row>
           <Grid.Column widht={2}>
-            <Image src={imgUrl || PFP} size='small' float='right' />
+            <Image
+              src={getAuthorPFP ? getAuthorPFP : PFP}
+              size='small'
+              float='right'
+            />
           </Grid.Column>
           <Grid.Column width={10}>
             <Card fluid>
@@ -173,7 +183,7 @@ const FETCH_POST_QUERY = gql`
     getPost(postId: $postId) {
       id
       body
-      imgUrl
+
       createdAt
       username
       likeCount
