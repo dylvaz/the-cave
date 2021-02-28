@@ -1,18 +1,11 @@
 const { ApolloServer } = require('apollo-server');
 const mongoose = require('mongoose');
-const express = require('express');
 
 const typeDefs = require('./graphql/typeDefs');
 const resolvers = require('./graphql/resolvers');
 require('dotenv').config();
 
-const app = express();
-
 const PORT = process.env.PORT || 5000;
-
-app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
-});
 
 //Instance of Server is created
 const server = new ApolloServer({
@@ -21,10 +14,6 @@ const server = new ApolloServer({
   context: ({ req }) => ({ req }),
 });
 
-server.applyMiddleware({
-  path: '/',
-  app,
-});
 //Mongoose connection
 mongoose
   .connect(process.env.MONGO_URI, {
