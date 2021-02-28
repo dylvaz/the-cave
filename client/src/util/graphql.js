@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 
-export const FETCH_POSTS_QUERY = gql`
+const FETCH_POSTS_QUERY = gql`
   query {
     getPosts {
       id
@@ -8,7 +8,6 @@ export const FETCH_POSTS_QUERY = gql`
       createdAt
       username
       likeCount
-      imgUrl
       likes {
         username
       }
@@ -22,3 +21,9 @@ export const FETCH_POSTS_QUERY = gql`
     }
   }
 `;
+const GET_AUTHOR_PFP = gql`
+  query($username: String!) {
+    getAuthorPFP(username: $username)
+  }
+`;
+export { FETCH_POSTS_QUERY, GET_AUTHOR_PFP };
