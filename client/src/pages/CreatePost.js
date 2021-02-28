@@ -76,7 +76,6 @@ const CREATE_POST = gql`
       body
       username
       createdAt
-      imgUrl
       comments {
         id
         body
