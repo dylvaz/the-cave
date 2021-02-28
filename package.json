@@ -2,7 +2,7 @@
   "scripts": {
     "frontend": "cd client && npm start",
     "api": "cd server && nodemon index.js",
-    "dev": "cd server && nodemon index.js && cd ../client && npm start",
+    "start": "cd server && nodemon index.js && cd ../client && npm start",
     "heroku-postbuild": "cd client && npm install && npm run build"
   },
   "engines": {
