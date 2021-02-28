@@ -1,7 +1,9 @@
 {
   "scripts": {
-    "start": "cd server/ && npm install && node index.js",
-    "heroku-postbuild": "cd client/ && npm install && npm run build"
+    "frontend": "cd client && npm start",
+    "api": "cd server && nodemon index.js",
+    "dev": "concurrently --kill-others-on-fail \"npm run api\" \"npm run frontend\"",
+    "heroku-postbuild": "cd client && npm install && npm run build"
   },
   "engines": {
     "node": "12.21.0"
