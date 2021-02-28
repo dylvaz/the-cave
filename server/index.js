@@ -14,6 +14,9 @@ const server = new ApolloServer({
   context: ({ req }) => ({ req }),
 });
 
+server.applyMiddleware({
+  path: '/',
+});
 //Mongoose connection
 mongoose
   .connect(process.env.MONGO_URI, {
