@@ -1,11 +1,22 @@
 import React, { useContext, useRef, useState } from 'react';
 import { gql, useMutation, useQuery } from '@apollo/client';
-import { Button, Card, Form, Grid, Icon, Image, Label, Popup } from 'semantic-ui-react';
+import {
+  Button,
+  Card,
+  Form,
+  Grid,
+  Icon,
+  Image,
+  Label,
+  Popup,
+} from 'semantic-ui-react';
 import { formatDistanceToNow, parseISO } from 'date-fns';
 
 import { AuthContext } from '../context/auth';
+import { GET_AUTHOR_PFP } from '../util/graphql';
 import DeleteButton from '../components/DeleteButton';
 import LikeButton from '../components/LikeButton';
+import PFP from '../assets/defaultPFP.jpg';
 
 const SinglePost = (props) => {
   const postId = props.match.params.postId;
@@ -15,10 +26,16 @@ const SinglePost = (props) => {
 
   const [comment, setComment] = useState('');
 
+  const { data: { getAuthorPFP } = {} } = useQuery(GET_AUTHOR_PFP, {
+    variables: {
+      username: user.username,
+    },
+  });
+
   const { data: { getPost } = {} } = useQuery(FETCH_POST_QUERY, {
     variables: {
-      postId
-    }
+      postId,
+    },
   });
 
   const [submitComment] = useMutation(CREATE_COMMENT_MUTATION, {
@@ -28,10 +45,9 @@ const SinglePost = (props) => {
     },
     variables: {
       postId,
-      body: comment
-    }
+      body: comment,
+    },
   });
-
 
   function deletePostCallback() {
     props.history.push('/');
@@ -41,12 +57,22 @@ const SinglePost = (props) => {
   if (!getPost) {
     postUI = <p> Loading post...</p>;
   } else {
-    const { body, createdAt, commentCount, comments, id, likeCount, likes, username } = getPost;
+    const {
+      body,
+      createdAt,
+      commentCount,
+      comments,
+      id,
+      likeCount,
+      likes,
+      username,
+    } = getPost;
     postUI = (
       <Grid>
         <Grid.Row>
           <Grid.Column widht={2}>
-            <Image src='https://react.semantic-ui.com/images/avatar/large/molly.png'
+            <Image
+              src={getAuthorPFP ? getAuthorPFP : PFP}
               size='small'
               float='right'
             />
@@ -55,10 +81,14 @@ const SinglePost = (props) => {
             <Card fluid>
               <Card.Content>
                 <Card.Header>{username}</Card.Header>
-                <Card.Meta>{formatDistanceToNow(parseISO(createdAt), { addSuffix: true })}</Card.Meta>
+                <Card.Meta>
+                  {formatDistanceToNow(parseISO(createdAt), {
+                    addSuffix: true,
+                  })}
+                </Card.Meta>
                 <Card.Description>{body}</Card.Description>
               </Card.Content>
-              <hr/>
+              <hr />
               <Card.Content extra>
                 <LikeButton user={user} post={{ id, likeCount, likes }} />
                 <Button as='div' labelPosition='right'>
@@ -85,14 +115,15 @@ const SinglePost = (props) => {
                         placeholder='Create a comment here!'
                         name='comment'
                         value={comment}
-                        onChange={e => setComment(e.target.value)}
+                        onChange={(e) => setComment(e.target.value)}
                         ref={commentInputRef}
                       />
                       <Popup
                         content='Submit comment'
                         inverted
                         trigger={
-                          <button type='submit'
+                          <button
+                            type='submit'
                             className='ui button purple'
                             disabled={comment.trim() === ''}
                             onClick={submitComment}
@@ -106,7 +137,7 @@ const SinglePost = (props) => {
                 </Card.Content>
               </Card>
             )}
-            {comments.map(comment => {
+            {comments.map((comment) => {
               return (
                 <Card fluid key={comment.id}>
                   <Card.Content>
@@ -114,7 +145,11 @@ const SinglePost = (props) => {
                       <DeleteButton postId={id} commentId={comment.id} />
                     )}
                     <Card.Header>{comment.username}</Card.Header>
-                    <Card.Meta>{formatDistanceToNow(parseISO(comment.createdAt), { addSuffix: true })}</Card.Meta>
+                    <Card.Meta>
+                      {formatDistanceToNow(parseISO(comment.createdAt), {
+                        addSuffix: true,
+                      })}
+                    </Card.Meta>
                     <Card.Description>{comment.body}</Card.Description>
                   </Card.Content>
                 </Card>
@@ -126,7 +161,6 @@ const SinglePost = (props) => {
     );
   }
   return postUI;
-
 };
 
 const CREATE_COMMENT_MUTATION = gql`
@@ -145,10 +179,11 @@ const CREATE_COMMENT_MUTATION = gql`
 `;
 
 const FETCH_POST_QUERY = gql`
-  query ($postId: ID!) {
+  query($postId: ID!) {
     getPost(postId: $postId) {
       id
       body
+
       createdAt
       username
       likeCount
@@ -160,7 +195,7 @@ const FETCH_POST_QUERY = gql`
         id
         username
         createdAt
-        body 
+        body
       }
     }
   }

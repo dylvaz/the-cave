@@ -15,7 +15,6 @@ const generateToken = (user) => {
       email: user.email,
       username: user.username,
       createdAt: user.createdAt,
-      imgUrl: user.imgUrl,
     },
     process.env.SECRET_KEY,
     { expiresIn: `1h` }
@@ -23,6 +22,16 @@ const generateToken = (user) => {
 };
 
 module.exports = {
+  Query: {
+    getAuthorPFP: async (_, { username }) => {
+      try {
+        const author = await User.findOne({ username });
+        return author.imgUrl;
+      } catch (err) {
+        throw new Error(err);
+      }
+    },
+  },
   Mutation: {
     login: async (_, { username, password }) => {
       const { errors, valid } = validateLoginInput(username, password);

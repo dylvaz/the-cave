@@ -2,8 +2,11 @@ const { GraphQLUpload } = require('graphql-upload');
 const AWS = require('aws-sdk');
 const { format } = require('date-fns');
 const { UserInputError } = require('apollo-server');
-const { imageTypeValidator } = require('../../util/validators');
 require('dotenv').config();
+
+const { imageTypeValidator } = require('../../util/validators');
+const checkAuth = require('../../util/checkAuth');
+const User = require('../../models/User');
 
 const credentials = new AWS.Credentials({
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -48,6 +51,21 @@ module.exports = {
         bucket: process.env.AWS_BUCKET,
       };
       return fileData;
+    },
+    editPFP: async (_, { location }, context) => {
+      const user = checkAuth(context);
+      try {
+        const currentUser = await User.findById(user.id);
+        if (currentUser) {
+          const updatedUser = await User.findOneAndUpdate(
+            { _id: currentUser._id },
+            { $set: { imgUrl: location } }
+          );
+          return location;
+        }
+      } catch (err) {
+        throw new Error(err);
+      }
     },
   },
 };
