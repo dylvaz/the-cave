@@ -6,7 +6,7 @@ import { createUploadLink } from 'apollo-upload-client';
 import App from './App';
 
 const uploadLink = createUploadLink({
-  uri: `http://localhost:${process.env.PORT}`,
+  uri: '/graphql',
   headers: {
     'keep-alive': 'true',
   },
