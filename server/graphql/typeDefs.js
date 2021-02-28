@@ -5,7 +5,6 @@ module.exports = gql`
     id: ID!
     body: String!
     username: String!
-    imgUrl: String
     createdAt: String!
     comments: [Comment]!
     likes: [Like]!
@@ -44,10 +43,12 @@ module.exports = gql`
     imgUrl: String
   }
   type Query {
+    getAuthorPFP(username: String!): String!
     getPosts: [Post]
     getPost(postId: ID!): Post
   }
   type Mutation {
+    editPFP(location: String!): String!
     s3Upload(file: Upload!): FileData!
     register(registerInput: RegisterInput): User!
     login(username: String!, password: String!): User!
