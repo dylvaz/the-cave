@@ -5,8 +5,6 @@ const typeDefs = require('./graphql/typeDefs');
 const resolvers = require('./graphql/resolvers');
 require('dotenv').config();
 
-const PORT = process.env.PORT || 5000;
-
 //Instance of Server is created
 const server = new ApolloServer({
   typeDefs,
@@ -25,7 +23,7 @@ mongoose
     console.log('Connected to mongoDB 🥳');
     //Apollo server connection
     return server
-      .listen({ port: PORT })
+      .listen({ port: process.env.PORT || 5000 })
       .then((res) => {
         console.log(`Server running at ${res.url}`);
       })
