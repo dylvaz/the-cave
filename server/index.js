@@ -1,10 +1,12 @@
 const { ApolloServer } = require('apollo-server');
 const mongoose = require('mongoose');
-const app = require('express');
+const express = require('express');
 
 const typeDefs = require('./graphql/typeDefs');
 const resolvers = require('./graphql/resolvers');
 require('dotenv').config();
+
+const app = express();
 
 const PORT = process.env.PORT || 5000;
 
