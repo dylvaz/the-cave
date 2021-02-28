@@ -6,11 +6,12 @@ import { createUploadLink } from 'apollo-upload-client';
 import App from './App';
 
 const uploadLink = createUploadLink({
+  uri: `http://localhost:${process.env.PORT}`,
   headers: {
     'keep-alive': 'true',
   },
 });
-
+console.log(process.env.PORT);
 const authLink = setContext((_, { headers }) => {
   // get the authentication token from local storage if it exists
   const token = localStorage.getItem('jwtToken');
