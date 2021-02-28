@@ -23,17 +23,21 @@ module.exports = {
       } catch (err) {
         throw new Error(err);
       }
-    }
+    },
   },
   Mutation: {
     createPost: async (_, { body }, context) => {
       const user = checkAuth(context);
 
+      if (body.trim() === '') {
+        throw new UserInputError('Post body must not be empty.');
+      }
+
       const newPost = new Post({
         body,
         user: user.id,
         username: user.username,
-        createdAt: new Date().toISOString()
+        createdAt: new Date().toISOString(),
       });
 
       const post = await newPost.save();
@@ -41,7 +45,7 @@ module.exports = {
     },
     deletePost: async (_, { postId }, context) => {
       const user = checkAuth(context);
-      
+
       try {
         const post = await Post.findById(postId);
         if (user.username === post.username) {
@@ -60,12 +64,14 @@ module.exports = {
       try {
         const post = await Post.findById(postId);
         if (post) {
-          if (post.likes.find(like => like.username === user.username)) {
-            post.likes = post.likes.filter(like => like.username !== user.username);
+          if (post.likes.find((like) => like.username === user.username)) {
+            post.likes = post.likes.filter(
+              (like) => like.username !== user.username
+            );
           } else {
             post.likes.push({
               username: user.username,
-              createdAt: new Date().toISOString()
+              createdAt: new Date().toISOString(),
             });
           }
           await post.save();
@@ -76,6 +82,6 @@ module.exports = {
       } catch (err) {
         throw new Error(err);
       }
-    }
-  }
+    },
+  },
 };

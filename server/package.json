@@ -5,19 +5,27 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "preinstall": "npx npm-force-resolutions"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "apollo-server": "^2.19.2",
+    "aws-sdk": "^2.841.0",
     "bcryptjs": "^2.4.3",
+    "date-fns": "^2.17.0",
     "dotenv": "^8.2.0",
     "graphql": "^15.5.0",
+    "graphql-upload": "^8.1.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.11.14"
   },
   "devDependencies": {
     "nodemon": "^2.0.7"
+  },
+  "resolutions": {
+    "**/graphql-upload": "^11.0.0",
+    "**/**/fs-capacitor": "^6.2.0"
   }
 }

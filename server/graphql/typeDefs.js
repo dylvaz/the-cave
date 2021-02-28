@@ -1,6 +1,6 @@
 const { gql } = require('apollo-server');
 
- module.exports = gql`
+module.exports = gql`
   type Post {
     id: ID!
     body: String!
@@ -17,6 +17,11 @@ const { gql } = require('apollo-server');
     username: String!
     createdAt: String!
   }
+  type FileData {
+    key: String!
+    location: String!
+    bucket: String!
+  }
   type Like {
     id: ID!
     username: String!
@@ -28,23 +33,28 @@ const { gql } = require('apollo-server');
     token: String!
     username: String!
     createdAt: String!
+    imgUrl: String
   }
   input RegisterInput {
     username: String!
     password: String!
     confirmPassword: String!
     email: String!
+    imgUrl: String
   }
   type Query {
+    getAuthorPFP(username: String!): String!
     getPosts: [Post]
     getPost(postId: ID!): Post
   }
   type Mutation {
+    editPFP(location: String!): String!
+    s3Upload(file: Upload!): FileData!
     register(registerInput: RegisterInput): User!
     login(username: String!, password: String!): User!
     createPost(body: String!): Post!
     deletePost(postId: ID!): String!
-    createComment(postId: String!, body: String!): Post!
+    createComment(postId: ID!, body: String!): Post!
     deleteComment(postId: ID!, commentId: ID!): Post!
     likePost(postId: ID!): Post!
   }

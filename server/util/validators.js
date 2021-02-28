@@ -14,12 +14,12 @@ module.exports.validateRegisterUserInput = (
     const regEx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (!email.match(regEx)) {
       errors.email = 'Email must be a valid email address.';
-    };
+    }
   }
   if (password === '') {
     errors.password = 'Password must not be empty.';
   } else if (password !== confirmPassword) {
-    errors.confirmPassword = 'Passwords must match';
+    errors.confirmPassword = 'Passwords must match.';
   }
   return {
     errors,
@@ -41,3 +41,15 @@ module.exports.validateLoginInput = (username, password) => {
   };
 };
 
+module.exports.imageTypeValidator = (imageType) => {
+  const errors = {};
+  const allowedImageExtensions = /(\.jpg|\.jpeg|\.bmp|\.png|\.gif)$/i;
+  if (!allowedImageExtensions.exec(imageType) && !null) {
+    errors.image =
+      'Invalid File type. The Supported image types are GIF, JPEG, PNG, JPG, and BMP.';
+  }
+  return {
+    errors,
+    valid: Object.keys(errors).length < 1,
+  };
+};
