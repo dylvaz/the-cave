@@ -10,6 +10,8 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
   context: ({ req }) => ({ req }),
+  introspection: true,
+  playground: true,
 });
 
 //Mongoose connection
