@@ -6,7 +6,7 @@ import { createUploadLink } from 'apollo-upload-client';
 import App from './App';
 
 const uploadLink = createUploadLink({
-  uri: '/graphql',
+  uri: 'https://vast-wave-88972.herokuapp.com/',
   headers: {
     'keep-alive': 'true',
   },
