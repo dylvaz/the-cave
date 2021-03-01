@@ -126,6 +126,7 @@ const Register = (props) => {
         ></Form.Input>
         <Button
           type='button'
+          color={uploadedFile ? 'purple' : 'grey'}
           disabled={uploadedFile ? false : true}
           onClick={onImgSubmit}
         >
