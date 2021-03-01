@@ -1,5 +1,5 @@
-import React, { useContext } from 'react';
-import { useQuery } from '@apollo/client';
+import React, { useContext, useEffect } from 'react';
+import { useLazyQuery } from '@apollo/client';
 import { formatDistanceToNow, parseISO } from 'date-fns';
 import { Button, Card, Icon, Image, Label, Popup } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
@@ -14,13 +14,15 @@ const PostCard = ({
   post: { body, createdAt, id, username, likeCount, commentCount, likes },
 }) => {
   const { user } = useContext(AuthContext);
-  const { loading, data } = useQuery(GET_AUTHOR_PFP, {
-    variables: {
-      username,
-    },
-    pollInterval: 500,
-  });
 
+  const [getPFP, { loading, data }] = useLazyQuery(GET_AUTHOR_PFP);
+  useEffect(() => {
+    getPFP({
+      variables: {
+        username: username,
+      },
+    });
+  }, [getPFP, username]);
   return (
     !loading && (
       <Card fluid>
