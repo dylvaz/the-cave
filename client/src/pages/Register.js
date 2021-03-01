@@ -19,7 +19,6 @@ const Register = (props) => {
 
   const imageOnChange = (e) => {
     setUploadedFile(e.target.files[0]);
-    setProgress(100);
   };
 
   const onImgSubmit = (e) => {
@@ -44,6 +43,7 @@ const Register = (props) => {
   const [s3Upload] = useMutation(S3_UPLOADER, {
     onCompleted(res) {
       setFileLocation(res.s3Upload.location);
+      setProgress(100);
     },
     onError(err) {
       console.log(err);
@@ -128,7 +128,11 @@ const Register = (props) => {
           onChange={imageOnChange}
           error={errors.image ? true : false}
         ></Form.Input>
-        <Progress progress={progress} percent={progress} autoSuccess />
+        <Progress
+          percent={progress}
+          color={progress === 100 ? 'green' : 'grey'}
+          progress
+        />
         <Button
           type='button'
           color={uploadedFile ? 'purple' : 'grey'}
