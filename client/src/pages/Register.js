@@ -1,11 +1,12 @@
 import React, { useContext, useState } from 'react';
 import { gql, useMutation } from '@apollo/client';
-import { Button, Form } from 'semantic-ui-react';
+import { Button, Form, Progress } from 'semantic-ui-react';
 
 import { AuthContext } from '../context/auth';
 
 const Register = (props) => {
   const context = useContext(AuthContext);
+  const [progress, setProgress] = useState(0);
   const [errors, setErrors] = useState({});
   const [values, setValues] = useState({
     username: '',
@@ -18,6 +19,7 @@ const Register = (props) => {
 
   const imageOnChange = (e) => {
     setUploadedFile(e.target.files[0]);
+    setProgress(100);
   };
 
   const onImgSubmit = (e) => {
@@ -41,10 +43,12 @@ const Register = (props) => {
 
   const [s3Upload] = useMutation(S3_UPLOADER, {
     onCompleted(res) {
-      return setFileLocation(res.s3Upload.location);
+      setFileLocation(res.s3Upload.location);
     },
     onError(err) {
+      console.log(err);
       setErrors(err.graphQLErrors[0].extensions.exception.errors);
+      setProgress(0);
       return err;
     },
     variables: {
@@ -124,6 +128,7 @@ const Register = (props) => {
           onChange={imageOnChange}
           error={errors.image ? true : false}
         ></Form.Input>
+        <Progress progress={progress} percent={progress} autoSuccess />
         <Button
           type='button'
           color={uploadedFile ? 'purple' : 'grey'}
