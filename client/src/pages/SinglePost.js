@@ -1,5 +1,5 @@
-import React, { useContext, useRef, useState } from 'react';
-import { gql, useMutation, useQuery } from '@apollo/client';
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import { gql, useLazyQuery, useMutation, useQuery } from '@apollo/client';
 import {
   Button,
   Card,
@@ -23,20 +23,28 @@ const SinglePost = (props) => {
   const { user } = useContext(AuthContext);
 
   const commentInputRef = useRef(null);
-
+  const [authorUsername, setAuthorUsername] = useState(null);
   const [comment, setComment] = useState('');
-
-  const { data: { getAuthorPFP } = {} } = useQuery(GET_AUTHOR_PFP, {
-    variables: {
-      username: user.username,
-    },
-  });
 
   const { data: { getPost } = {} } = useQuery(FETCH_POST_QUERY, {
     variables: {
       postId,
     },
+    onCompleted: () => {
+      setAuthorUsername(getPost.username);
+      getPFP({
+        variables: {
+          username: getPost.username,
+        },
+      });
+    },
   });
+
+  const [getPFP, { data: { getAuthorPFP } = {} }] = useLazyQuery(
+    GET_AUTHOR_PFP
+  );
+
+  useEffect(() => {}, [authorUsername]);
 
   const [submitComment] = useMutation(CREATE_COMMENT_MUTATION, {
     update() {
@@ -70,7 +78,7 @@ const SinglePost = (props) => {
     postUI = (
       <Grid>
         <Grid.Row>
-          <Grid.Column widht={2}>
+          <Grid.Column width={2}>
             <Image
               src={getAuthorPFP ? getAuthorPFP : PFP}
               size='small'
